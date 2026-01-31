@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "健康数据",
+  "usingComponents": {
+    "t-toast": "tdesign-miniprogram/toast/toast"
+  }
+}

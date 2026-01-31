@@ -1,0 +1,83 @@
+<!-- 用户信息卡片 -->
+<view class="profile-header">
+  <view class="user-info">
+    <image class="user-avatar" src="{{userInfo.avatarUrl || '/static/default-avatar.png'}}" mode="aspectFill" bind:tap="onAvatarClick" />
+    <view class="user-details">
+      <view class="user-name">{{userInfo.nickName || '川哥'}}</view>
+      <view class="user-id" wx:if="{{userInfo.userId}}">ID: {{userInfo.userId}}</view>
+    </view>
+    <view class="settings-btn" bind:tap="onSettingsClick">设置</view>
+  </view>
+</view>
+
+<view class="content-wrapper">
+  <!-- 设备中心 -->
+  <view class="device-section">
+    <view class="section-title">设备中心</view>
+    <view class="device-status">
+      <text class="status-label">设备状态：</text>
+      <text class="status-value {{deviceInfo.isConnected ? 'connected' : 'disconnected'}}">
+        {{deviceInfo.status}}
+      </text>
+    </view>
+    
+    <!-- 扫描进度 -->
+    <view class="scan-progress" wx:if="{{isScanning}}">
+      <view class="progress-bar">
+        <view class="progress-fill"></view>
+      </view>
+    </view>
+
+    <!-- 设备操作按钮 -->
+    <view class="device-actions">
+      <button class="action-btn" bind:tap="onScanClick" disabled="{{isScanning}}">
+        {{isScanning ? '扫描中...' : '搜索设备'}}
+      </button>
+      <button class="action-btn disconnect-btn" bind:tap="onDisconnectClick" disabled="{{!deviceInfo.isConnected}}">
+        断开连接
+      </button>
+    </view>
+
+    <!-- 扫描错误提示 -->
+    <view class="scan-error" wx:if="{{scanError}}">
+      <view class="error-title">⚠️ 扫描错误</view>
+      <view class="error-message">{{scanError}}</view>
+      <view class="error-tip">提示：请查看控制台日志了解详细信息</view>
+    </view>
+
+    <!-- 设备列表 -->
+    <view class="device-list" wx:if="{{deviceList.length > 0}}">
+      <view 
+        class="device-item" 
+        wx:for="{{deviceList}}" 
+        wx:key="deviceId"
+        bind:tap="onDeviceItemClick"
+        data-device="{{item}}"
+      >
+        <view class="device-info">
+          <view class="device-name">{{item.name}}</view>
+          <view class="device-id">{{item.deviceId}}</view>
+          <view class="device-rssi">信号强度: {{item.RSSI}} dBm</view>
+        </view>
+        <view class="device-connect-btn">连接</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 我的服务 -->
+  <view class="service-section">
+    <view class="section-title">我的服务</view>
+    <view class="service-grid">
+      <view class="service-item" bind:tap="onHistoryClick">
+        <view class="service-icon">📊</view>
+        <view class="service-name">历史记录</view>
+      </view>
+      <view class="service-item" bind:tap="onTestClick">
+        <view class="service-icon">🔧</view>
+        <view class="service-name">测试页面</view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<t-toast id="t-toast" />

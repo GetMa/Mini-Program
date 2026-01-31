@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "戒指健康监测",
+  "backgroundTextStyle": "light",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "t-popup": "tdesign-miniprogram/popup/popup",
+    "t-toast": "tdesign-miniprogram/toast/toast"
+  }
+}

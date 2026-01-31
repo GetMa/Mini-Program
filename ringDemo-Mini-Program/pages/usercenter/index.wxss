@@ -1,0 +1,272 @@
+page {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* 用户信息头部 */
+.profile-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 60rpx 32rpx 40rpx;
+  margin-bottom: 24rpx;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  border-radius: 50%;
+  border: 4rpx solid rgba(255, 255, 255, 0.3);
+  margin-right: 32rpx;
+}
+
+.user-details {
+  flex: 1;
+  color: #fff;
+}
+
+.user-name {
+  font-size: 40rpx;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+
+.user-id {
+  font-size: 26rpx;
+  opacity: 0.8;
+}
+
+.settings-btn {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 16rpx 40rpx;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+}
+
+/* 内容区域 */
+.content-wrapper {
+  padding: 0 24rpx;
+  padding-bottom: 120rpx;
+}
+
+/* 设备中心 */
+.device-section {
+  background-color: #fff;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 24rpx;
+}
+
+.device-status {
+  margin-bottom: 24rpx;
+}
+
+.status-label {
+  font-size: 28rpx;
+  color: #666;
+  margin-right: 16rpx;
+}
+
+.status-value {
+  font-size: 28rpx;
+  font-weight: bold;
+}
+
+.status-value.connected {
+  color: #52c41a;
+}
+
+.status-value.disconnected {
+  color: #999;
+}
+
+/* 扫描进度 */
+.scan-progress {
+  margin-bottom: 24rpx;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8rpx;
+  background-color: #f0f0f0;
+  border-radius: 4rpx;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  animation: progress 1.5s ease-in-out infinite;
+}
+
+@keyframes progress {
+  0% {
+    width: 0%;
+    margin-left: 0%;
+  }
+  50% {
+    width: 70%;
+    margin-left: 0%;
+  }
+  100% {
+    width: 100%;
+    margin-left: 100%;
+  }
+}
+
+/* 设备操作按钮 */
+.device-actions {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.action-btn {
+  flex: 1;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border: none;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+}
+
+.action-btn[disabled] {
+  background: #ccc;
+  color: #999;
+}
+
+.disconnect-btn {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.disconnect-btn[disabled] {
+  background: #f5f5f5;
+  color: #ccc;
+}
+
+/* 设备列表 */
+.device-list {
+  margin-top: 24rpx;
+}
+
+.device-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx;
+  background-color: #f9f9f9;
+  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.device-info {
+  flex: 1;
+}
+
+.device-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.device-id {
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 4rpx;
+  word-break: break-all;
+}
+
+.device-rssi {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.device-connect-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  padding: 16rpx 32rpx;
+  border-radius: 32rpx;
+  font-size: 26rpx;
+  font-weight: bold;
+  margin-left: 24rpx;
+}
+
+/* 扫描错误提示 */
+.scan-error {
+  margin-top: 24rpx;
+  padding: 24rpx;
+  background-color: #fff3cd;
+  border: 2rpx solid #ffc107;
+  border-radius: 16rpx;
+}
+
+.error-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #856404;
+  margin-bottom: 12rpx;
+}
+
+.error-message {
+  font-size: 26rpx;
+  color: #856404;
+  margin-bottom: 12rpx;
+  line-height: 1.6;
+}
+
+.error-tip {
+  font-size: 24rpx;
+  color: #856404;
+  opacity: 0.8;
+}
+
+/* 我的服务 */
+.service-section {
+  background-color: #fff;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24rpx;
+  margin-top: 24rpx;
+}
+
+.service-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32rpx 16rpx;
+  background-color: #f9f9f9;
+  border-radius: 16rpx;
+}
+
+.service-icon {
+  font-size: 64rpx;
+  margin-bottom: 16rpx;
+}
+
+.service-name {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}

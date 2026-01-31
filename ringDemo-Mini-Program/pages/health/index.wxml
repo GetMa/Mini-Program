@@ -1,0 +1,67 @@
+<view class="health-page">
+  <view class="health-header">
+    <view class="health-title">健康数据</view>
+    <view class="health-subtitle">{{connectedDeviceId ? '设备 ' + connectedDeviceId + ' · ' : ''}}最近更新 {{lastUpdateTime}}</view>
+  </view>
+
+  <!-- 身体电量卡片 -->
+  <view class="health-card body-battery-card" bind:tap="onBodyBatteryClick">
+    <view class="card-title">身体电量</view>
+    <view class="card-value">{{bodyBattery === '--' ? '--' : bodyBattery + '%'}}</view>
+  </view>
+
+  <!-- 健康指标网格 -->
+  <view class="health-grid">
+    <!-- 心率 -->
+    <view class="health-grid-item" bind:tap="onHeartRateClick">
+      <view class="grid-title">心率</view>
+      <view class="grid-value">{{heartRate}}</view>
+    </view>
+
+    <!-- 血氧 -->
+    <view class="health-grid-item" bind:tap="onBloodOxygenClick">
+      <view class="grid-title">血氧</view>
+      <view class="grid-value">{{bloodOxygen}}</view>
+    </view>
+
+    <!-- 压力 -->
+    <view class="health-grid-item" bind:tap="onStressClick">
+      <view class="grid-title">压力</view>
+      <view class="grid-value">{{stress}}</view>
+    </view>
+
+    <!-- 睡眠分析 -->
+    <view class="health-grid-item" bind:tap="onSleepAnalysisClick">
+      <view class="grid-title">睡眠分析</view>
+      <view class="grid-value">报告待更新</view>
+    </view>
+  </view>
+
+  <!-- 近期历史 -->
+  <view class="health-card history-card" bind:tap="onHistoryClick">
+    <view class="card-title">近期历史</view>
+    <view class="card-subtitle">查看历史数据趋势</view>
+  </view>
+
+  <!-- 特定戒指周期采集 -->
+  <view class="health-card collection-card" bind:tap="onCollectionClick">
+    <view class="card-title">特定戒指周期采集</view>
+    <view class="card-subtitle">调节采集策略</view>
+  </view>
+
+  <!-- 测量进度弹窗 -->
+  <t-popup visible="{{showMeasurementDialog}}" placement="center" bind:visible-change="onMeasurementDialogChange">
+    <view class="measurement-dialog">
+      <view class="dialog-title">{{measurementTitle}}</view>
+      <view class="dialog-progress">
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{measurementProgress}}%"></view>
+        </view>
+        <view class="progress-text">进度: {{measurementProgress}}%</view>
+      </view>
+      <view class="dialog-tip">测量中，请保持手指稳定...</view>
+    </view>
+  </t-popup>
+
+  <t-toast id="t-toast" />
+</view>

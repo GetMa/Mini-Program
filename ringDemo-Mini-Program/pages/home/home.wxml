@@ -1,0 +1,103 @@
+<view class="home-page">
+  <!-- 顶部问候语 -->
+  <view class="home-header">
+    <view class="header-date">{{todayDate}}</view>
+    <view class="header-greeting">{{greeting}}</view>
+    <view class="header-subtitle">今天也要保持好状态</view>
+  </view>
+
+  <!-- 快捷功能 -->
+  <view class="section-title">快捷功能</view>
+  <view class="quick-actions">
+    <view class="quick-action-item" bind:tap="onAIDoctorClick">
+      <view class="action-title">AI医生</view>
+      <view class="action-subtitle">智能分析</view>
+    </view>
+    <view class="quick-action-item" bind:tap="onRecoveryClick">
+      <view class="action-title">再生计划</view>
+      <view class="action-subtitle">恢复训练</view>
+    </view>
+  </view>
+
+  <!-- 健康指标 -->
+  <view class="section-title">健康指标</view>
+  <view class="health-metrics">
+    <!-- 心率 -->
+    <view class="metric-card" bind:tap="onHeartRateClick">
+      <view class="metric-title">心率</view>
+      <view class="metric-content">
+        <view class="metric-value">{{heartRate}}<text wx:if="{{heartRate !== '--'}}"> bpm</text></view>
+        <view class="metric-time" wx:if="{{heartRateTime}}">{{heartRateTime}}</view>
+      </view>
+    </view>
+
+    <!-- 血氧 -->
+    <view class="metric-card" bind:tap="onOxygenClick">
+      <view class="metric-title">血氧饱和度</view>
+      <view class="metric-content">
+        <view class="metric-value">{{oxygen}}<text wx:if="{{oxygen !== '--'}}"> %</text></view>
+        <view class="metric-time" wx:if="{{oxygenTime}}">{{oxygenTime}}</view>
+      </view>
+    </view>
+
+    <!-- 体温 -->
+    <view class="metric-card" bind:tap="onTemperatureClick">
+      <view class="metric-title">体温</view>
+      <view class="metric-content">
+        <view class="metric-value">{{temperature}}<text wx:if="{{temperature !== '--'}}"> °C</text></view>
+        <view class="metric-time" wx:if="{{temperatureTime}}">{{temperatureTime}}</view>
+      </view>
+    </view>
+
+    <!-- 设备电量 -->
+    <view class="metric-card" bind:tap="onBatteryClick">
+      <view class="metric-title">设备电量</view>
+      <view class="metric-content">
+        <view class="metric-value">{{battery}}<text wx:if="{{battery !== '--'}}"> %</text></view>
+        <view class="metric-time" wx:if="{{batteryTime}}">{{batteryTime}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 每日活动 -->
+  <view class="activity-card" bind:tap="onActivityClick">
+    <view class="activity-title">每日活动</view>
+    <view class="activity-content">
+      <view class="activity-item">
+        <view class="activity-label">步数</view>
+        <view class="activity-value">{{activityStepsText}}</view>
+      </view>
+      <view class="activity-item">
+        <view class="activity-label">心率</view>
+        <view class="activity-value">{{activityHeartRateText}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 睡眠 -->
+  <view class="sleep-card" bind:tap="onSleepClick">
+    <view class="sleep-title">睡眠</view>
+    <view class="sleep-value">{{sleepText}}</view>
+  </view>
+
+  <!-- 查看检测报告 -->
+  <view class="report-button" bind:tap="onHistoryReportClick">
+    查看检测报告
+  </view>
+
+  <!-- 测量进度弹窗 -->
+  <t-popup visible="{{showMeasurementDialog}}" placement="center" bind:visible-change="onMeasurementDialogChange">
+    <view class="measurement-dialog">
+      <view class="dialog-title">{{measurementTitle}}</view>
+      <view class="dialog-progress">
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{measurementProgress}}%"></view>
+        </view>
+        <view class="progress-text">进度: {{measurementProgress}}%</view>
+      </view>
+      <view class="dialog-tip">测量中，请保持手指稳定...</view>
+    </view>
+  </t-popup>
+
+  <t-toast id="t-toast" />
+</view>
