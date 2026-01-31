@@ -1,0 +1,81 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/brand_surface</item>
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="android:navigationBarColor">@color/brand_surface</item>
+        <item name="materialButtonStyle">@style/Widget.RingDemo.PrimaryButton</item>
+        <item name="materialCardViewStyle">@style/Widget.RingDemo.Card</item>
+        <!-- 设置全局字体以确保中文正常显示 -->
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="fontFamily">sans-serif</item>
+        <!-- 确保文本在系统字体缩放时能正确换行 -->
+        <item name="android:breakStrategy">high_quality</item>
+        <item name="android:hyphenationFrequency">full</item>
+    </style>
+    <style name="Widget.RingDemo.PrimaryButton" parent="@style/Widget.MaterialComponents.Button">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:insetLeft">12dp</item>
+        <item name="android:insetRight">12dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.RingDemo.Button</item>
+        <!-- 确保按钮能自适应内容大小 -->
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:paddingVertical">8dp</item>
+    </style>
+
+    <style name="Widget.RingDemo.Card" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="android:layout_margin">8dp</item>
+        <item name="cardCornerRadius">18dp</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="cardElevation">4dp</item>
+    </style>
+
+    <style name="ShapeAppearance.RingDemo.Button" parent="@style/ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">18dp</item>
+    </style>
+
+    <declare-styleable name="Chart_type">
+        <attr name="chartType" format="enum">
+            <enum name="heart_main" value="0" />
+            <enum name="heart_day" value="1" />
+            <enum name="heart_week" value="2" />
+            <enum name="heart_month" value="3" />
+            <enum name="stress_main" value="4" />
+            <enum name="step_main" value="5" />
+            <enum name="blood_day" value="6" />
+            <enum name="blood_week" value="7" />
+            <enum name="blood_month" value="8" />
+            <enum name="sleep_day" value="9" />
+            <enum name="sleep_week" value="10" />
+            <enum name="sleep_month" value="11" />
+            <enum name="temp_day" value="12" />
+            <enum name="temp_week" value="13" />
+            <enum name="temp_month" value="14" />
+            <enum name="stress_day" value="15" />
+            <enum name="stress_week" value="16" />
+            <enum name="stress_month" value="17" />
+            <enum name="sleep_main" value="18" />
+            <enum name="sport_day" value="19" />
+            <enum name="sport_week" value="20" />
+            <enum name="sport_month" value="21" />
+            <enum name="pie" value="22" />
+            <enum name="sport_his" value="23" />
+            <enum name="heart_altered" value="24" />
+            <enum name="altered_day" value="25" />
+            <enum name="altered_week" value="26" />
+            <enum name="altered_month" value="27" />
+            <enum name="menses" value="28" />
+            <enum name="menses_cycle" value="29" />
+        </attr>
+    </declare-styleable>
+
+</resources>

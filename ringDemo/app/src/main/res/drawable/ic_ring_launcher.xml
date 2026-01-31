@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- 戒指外圈 -->
+    <path
+        android:fillColor="#5560FF"
+        android:pathData="M54,20 C70,20 82,32 82,48 C82,64 70,76 54,76 C38,76 26,64 26,48 C26,32 38,20 54,20 Z"/>
+    
+    <!-- 戒指内圈 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,30 C65,30 72,37 72,48 C72,59 65,66 54,66 C43,66 36,59 36,48 C36,37 43,30 54,30 Z"/>
+    
+    <!-- 高科技装饰点 -->
+    <path
+        android:fillColor="#7CD8FF"
+        android:pathData="M54,48 m -4,0 a 4,4 0 1,1 8,0 a 4,4 0 1,1 -8,0"/>
+    
+    <!-- 顶部装饰 -->
+    <path
+        android:fillColor="#7CD8FF"
+        android:pathData="M54,20 L58,28 L50,28 Z"/>
+    
+    <!-- 底部装饰 -->
+    <path
+        android:fillColor="#7CD8FF"
+        android:pathData="M54,76 L58,68 L50,68 Z"/>
+    
+    <!-- 左侧装饰 -->
+    <path
+        android:fillColor="#7CD8FF"
+        android:pathData="M20,48 L28,44 L28,52 Z"/>
+    
+    <!-- 右侧装饰 -->
+    <path
+        android:fillColor="#7CD8FF"
+        android:pathData="M88,48 L80,44 L80,52 Z"/>
+</vector>
+

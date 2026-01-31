@@ -1,0 +1,439 @@
+package com.lomo.demo.base;
+
+
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.provider.Settings;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import com.lm.sdk.LmAPI;
+import com.lm.sdk.LmAPILite;
+import com.lm.sdk.inter.IResponseListener;
+import com.lm.sdk.mode.SystemControlBean;
+import com.lm.sdk.utils.BLEUtils;
+import com.lomo.demo.application.App;
+
+import android.util.Log;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+/**
+ * 作者: Sunshine
+ * 时间: 2017/11/4.
+ * 邮箱: 44493547@qq.com
+ * 描述:
+ *
+ * @author Lizhao
+ */
+
+public class BaseActivity extends AppCompatActivity implements  IResponseListener{
+
+
+
+    private int REQUEST_CODE_PERMISSION = 0x00099;
+    private static boolean cmdListenerInit=false;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(!cmdListenerInit){
+            LmAPI.addWLSCmdListener(this, this);
+            cmdListenerInit=true;
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LmAPI.removeWLSCmdListener(this);
+    }
+
+
+
+    /**
+     * 请求权限
+     *
+     * @param permissions 请求的权限
+     * @param requestCode 请求权限的请求码
+     */
+    public void requestPermission(String[] permissions, int requestCode) {
+        this.REQUEST_CODE_PERMISSION = requestCode;
+        if (checkPermissions(permissions)) {
+            permissionSuccess(REQUEST_CODE_PERMISSION);
+        } else {
+            List<String> needPermissions = getDeniedPermissions(permissions);
+            ActivityCompat.requestPermissions(this, needPermissions.toArray(new String[needPermissions.size()]), REQUEST_CODE_PERMISSION);
+        }
+    }
+
+    /**
+     * 检测所有的权限是否都已授权
+     *
+     * @param permissions
+     * @return
+     */
+    public boolean checkPermissions(String[] permissions) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return true;
+        }
+
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) !=
+                    PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 获取权限集中需要申请权限的列表
+     *
+     * @param permissions
+     * @return
+     */
+    private List<String> getDeniedPermissions(String[] permissions) {
+        List<String> needRequestPermissionList = new ArrayList<>();
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) !=
+                    PackageManager.PERMISSION_GRANTED ||
+                    ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+                needRequestPermissionList.add(permission);
+            }
+        }
+        return needRequestPermissionList;
+    }
+
+
+    /**
+     * 系统请求权限回调
+     *
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_PERMISSION) {
+            if (verifyPermissions(grantResults)) {
+                permissionSuccess(REQUEST_CODE_PERMISSION);
+            } else {
+                permissionFail(REQUEST_CODE_PERMISSION);
+                showTipsDialog();
+            }
+        }
+    }
+
+    /**
+     * 确认所有的权限是否都已授权
+     *
+     * @param grantResults
+     * @return
+     */
+    private boolean verifyPermissions(int[] grantResults) {
+        for (int grantResult : grantResults) {
+            if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 显示提示对话框
+     */
+    private void showTipsDialog() {
+       //TODO 提示用户未授权
+    }
+
+    /**
+     * 启动当前应用设置页面
+     */
+    private void startAppSettings() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.parse("package:" + getPackageName()));
+        startActivity(intent);
+    }
+
+    /**
+     * 获取权限成功
+     *
+     * @param requestCode
+     */
+    public void permissionSuccess(int requestCode) {
+
+
+    }
+
+    /**
+     * 权限获取失败
+     *
+     * @param requestCode
+     */
+    public void permissionFail(int requestCode) {
+
+    }
+
+    @Override
+    public void lmBleConnecting(int code) {
+
+    }
+
+    @Override
+    public void lmBleConnectionSucceeded(int code) {
+        if (code == 7) {
+            // 延迟设置连接状态，确保连接完全建立
+            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                BLEUtils.setGetToken(true);
+                App.isConnectionActive = true; // 标记连接为活动状态
+                App.needAutoConnect = true; // 确保自动重连开启
+                
+                // 再次延迟同步时间，确保连接稳定
+                new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                    try {
+                        LmAPI.SYNC_TIME();
+                    } catch (Exception e) {
+                        Log.e("BaseActivity", "同步时间失败: " + e.getMessage());
+                    }
+                    
+                    // 再次延迟发送广播，确保连接完全稳定
+                    new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                        // 发送连接成功广播
+                        Intent intent = new Intent("ACTION_BLE_CONNECTED");
+                        sendBroadcast(intent);
+                    }, 2000); // 再延迟2秒确保连接稳定
+                }, 1000); // 延迟1秒后同步时间
+            }, 1500); // 延迟1.5秒确保连接稳定
+        }
+    }
+
+    @Override
+    public void lmBleConnectionFailed(int code) {
+        App.isConnectionActive = false; // 标记连接为非活动状态
+        // 发送断开连接广播
+        Intent intent = new Intent("ACTION_BLE_DISCONNECTED");
+        sendBroadcast(intent);
+    }
+
+    @Override
+    public void VERSION(byte type, String version) {
+
+    }
+
+    @Override
+    public void syncTime(byte datum, byte[] time) {
+
+    }
+
+    @Override
+    public void stepCount(byte[] bytesToInt) {
+
+    }
+
+    @Override
+    public void clearStepCount(byte data) {
+
+    }
+
+    @Override
+    public void battery(byte b, byte datum) {
+        // 保存电池电量数据
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String currentTime = dateFormat.format(new Date());
+        
+        SharedPreferences healthPrefs = getSharedPreferences("health_data", MODE_PRIVATE);
+        SharedPreferences.Editor editor = healthPrefs.edit();
+        editor.putString("battery", String.valueOf(datum));
+        editor.putString("battery_time", currentTime);
+        editor.apply();
+        
+        // 发送广播通知更新显示
+        Intent intent = new Intent("ACTION_HEALTH_DATA_UPDATED");
+        sendBroadcast(intent);
+    }
+
+    @Override
+    public void battery_push(byte b, byte datum) {
+
+    }
+
+    @Override
+    public void timeOut() {
+
+    }
+
+    @Override
+    public void saveData(String str_data) {
+
+    }
+
+    @Override
+    public void reset(byte[] data) {
+
+    }
+
+    @Override
+    public void setCollection(byte result) {
+
+    }
+
+    @Override
+    public void getCollection(byte[] data) {
+
+    }
+
+    @Override
+    public void getSerialNum(byte[] serial) {
+
+    }
+
+    @Override
+    public void setSerialNum(byte data) {
+
+    }
+
+    @Override
+    public void cleanHistory(byte data) {
+
+    }
+
+    @Override
+    public void setBlueToolName(byte data) {
+
+    }
+
+    @Override
+    public void readBlueToolName(byte len, String name) {
+
+    }
+
+    @Override
+    public void stopRealTimeBP(byte isSend) {
+
+    }
+
+    @Override
+    public void BPwaveformData(byte seq, byte number, String waveDate) {
+
+    }
+
+    @Override
+    public void onSport(int type, byte[] data) {
+
+    }
+
+    @Override
+    public void breathLight(byte time) {
+
+    }
+
+    @Override
+    public void SET_HID(byte result) {
+
+    }
+
+    @Override
+    public void GET_HID(byte touch, byte gesture, byte system) {
+
+    }
+
+    @Override
+    public void GET_HID_CODE(byte[] bytes) {
+
+    }
+
+    @Override
+    public void GET_CONTROL_AUDIO_ADPCM(byte pcmType) {
+
+    }
+
+    @Override
+    public void SET_AUDIO_ADPCM_AUDIO(byte result) {
+
+    }
+
+    @Override
+    public void TOUCH_AUDIO_FINISH_XUN_FEI() {
+
+    }
+
+    @Override
+    public void setAudio(short totalLength, int index, byte[] audioData) {
+
+    }
+
+    @Override
+    public void stopHeart(byte data) {
+
+    }
+
+    @Override
+    public void stopQ2(byte data) {
+
+    }
+
+    @Override
+    public void GET_ECG(byte[] bytes) {
+
+    }
+
+    @Override
+    public void SystemControl(SystemControlBean systemControlBean) {
+
+    }
+
+    @Override
+    public void setUserInfo(byte result) {
+
+    }
+
+    @Override
+    public void getUserInfo(int sex, int height, int weight, int age) {
+
+    }
+
+    @Override
+    public void CONTROL_AUDIO(byte[] bytes) {
+
+    }
+
+    @Override
+    public void motionCalibration(byte sport_count) {
+
+    }
+
+    @Override
+    public void stopBloodPressure(byte data) {
+
+    }
+
+    @Override
+    public void appBind(SystemControlBean systemControlBean) {
+
+    }
+
+    @Override
+    public void appConnect(SystemControlBean systemControlBean) {
+
+    }
+
+    @Override
+    public void appRefresh(SystemControlBean systemControlBean) {
+
+    }
+}
